@@ -1,6 +1,5 @@
 'use strict';
 
-/* eslint-disable */
 var appId = 'f5b8cf8a44d1f85331b87e9f7b361caf/',
     apiUrl = 'https://api.forecast.io/forecast/',
     longitude = '',
@@ -27,7 +26,6 @@ function getWeather() {
         jsonpCallback: 'weatherData',
         type: 'GET'
     }).fail(function Error() {
-        console.log('error');
         alert('cannot connect to weather API');
     });
 }
@@ -46,14 +44,12 @@ function getCityName() {
         type: 'GET',
         dataType: 'json',
         data: {
-            location_type: 'GEOMETRIC_CENTER',
+            //location_type: 'GEOMETRIC_CENTER',
             key: keyGoogle
         }
     }).done(function (googleResponse) {
-        console.log(googleResponse);
         $city.text(googleResponse.results[0].formatted_address);
     }).fail(function (googleResponse) {
-        console.log(googleResponse);
         Materialize.toast('Cannot get City Name from google', 600);
     });
 }
@@ -65,7 +61,6 @@ function coordsSucces(pos) {
     var crd = pos.coords;
     latitude = crd.latitude;
     longitude = crd.longitude;
-    console.log(latitude + ' ' + longitude);
     getWeather();
     getCityName();
 }
