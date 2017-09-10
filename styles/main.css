@@ -121,7 +121,7 @@ body section.main .content .card .weather-image {
       -ms-flex-positive: 3;
           flex-grow: 3;
   width: 66%;
-  background-image: url("../images/sun-hot.jpg");
+  background-image: url("../images/clear_day.jpg");
   background-size: cover;
   background-position: center center;
 }

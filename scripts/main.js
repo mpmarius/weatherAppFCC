@@ -157,7 +157,7 @@ function changeWeatherImage(icon) {
     };
     $.map(image, function(value, key) {
         if (value === icon || key.indexOf(icon) !== -1) {
-            $('.weather-image').css('background-image', 'url(\'../images/' + key + '.jpg\')');
+            $('.weather-image').css('background-image', 'url(\'images/' + key + '.jpg\')');
         }
     });
 
