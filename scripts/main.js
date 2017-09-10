@@ -77,11 +77,14 @@ function changeTemp(temp, unit) {
 
     var count = parseInt($temp.text());
     $unit.text(unit);
+    $('#metrics').attr('disabled', 'true')
+
     if (count < temp) {
         var interval = setInterval(function () {
             $temp.text(count++);
             if (count === temp) {
                 clearInterval(interval);
+                $('#metrics').attr('disabled', 'false')
             }
         }, 30);
     } else {
@@ -89,6 +92,7 @@ function changeTemp(temp, unit) {
             $temp.text(count--);
             if (count === temp) {
                 clearInterval(interval);
+                $('#metrics').attr('disabled', 'false')
             }
         }, 30);
     }
