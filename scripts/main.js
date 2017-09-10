@@ -46,7 +46,7 @@ function getCityName() {
         type: 'GET',
         dataType: 'json',
         data: {
-            location_type: 'GEOMETRIC_CENTER',
+            //location_type: 'GEOMETRIC_CENTER',
             key: keyGoogle
         }
     }).done(function (googleResponse) {
@@ -82,14 +82,14 @@ function changeTemp(temp, unit) {
 
     var count = parseInt($temp.text());
     $unit.text(unit);
-    $('#metrics').attr('disabled', 'true')
+    $('#metrics').attr('disabled', true)
 
     if (count < temp) {
         var interval = setInterval(function () {
             $temp.text(count++);
             if (count === temp) {
                 clearInterval(interval);
-                $('#metrics').attr('disabled', 'false')
+                $('#metrics').attr('disabled', false)
             }
         }, 30);
     } else {
@@ -97,7 +97,7 @@ function changeTemp(temp, unit) {
             $temp.text(count--);
             if (count === temp) {
                 clearInterval(interval);
-                $('#metrics').attr('disabled', 'false')
+                $('#metrics').attr('disabled', false)
             }
         }, 30);
     }
@@ -114,8 +114,9 @@ function weatherData(forecast) {
     weatherIcon = forecast.currently.icon;
     forecastIcons.set('weather_icon', weatherIcon);
     forecastIcons.play();
-    changeTemp(temp, 'F');
+    changeTemp(temp, 'C');
     changeBgColor(temp);
+    changeWeatherImage(weatherIcon);
 }
 // change temperature metric-imperial
 function setMetrics() {
@@ -144,6 +145,24 @@ function changeBgColor(temp) {
         position = 100;
     }
     $('body').css('background-position', position + '%');
+}
+
+// Change Weather bg-image
+
+function changeWeatherImage(icon) {
+    var image = {
+        clear_night: 'clear-night',
+        clear_day: 'clear-day',
+        cloudy: ['partly-cloudy-day', 'partly-cloudy-night', 'fog', 'cloudy', 'wind'],
+        snow: ['snow', 'sleet'],
+        rain: ['rain', 'drizzle']
+    };
+    $.map(image, function(value, key) {
+        if (value === icon || key.indexOf(icon) !== -1) {
+            $('.weather-image').css('background-image', 'url(\'../images/' + key + '.jpg\')');
+        }
+    });
+
 }
 
 $(document).ready(function () {
