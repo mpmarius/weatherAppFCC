@@ -75,16 +75,17 @@ function coordsError(err) {
 function changeTemp(temp, unit) {
     'use strict';
 
-    var count = parseInt($temp.text());
-    $unit.text(unit);
-    $('#metrics').attr('disabled', 'true')
+    var count = parseInt($temp.text()),
+        $unit = $('#unit');
 
+    $unit.text(unit);
+    $('#metrics').attr('disabled', true)
     if (count < temp) {
         var interval = setInterval(function () {
             $temp.text(count++);
             if (count === temp) {
                 clearInterval(interval);
-                $('#metrics').attr('disabled', 'false')
+                $('#metrics').attr('disabled', false)
             }
         }, 30);
     } else {
@@ -92,7 +93,7 @@ function changeTemp(temp, unit) {
             $temp.text(count--);
             if (count === temp) {
                 clearInterval(interval);
-                $('#metrics').attr('disabled', 'false')
+                $('#metrics').attr('disabled', false)
             }
         }, 30);
     }
@@ -103,14 +104,16 @@ function weatherData(forecast) {
     'use strict';
 
     var forecastIcons = new Skycons({ 'color': 'gray' });
-    var temp = Math.floor(forecast.currently.temperature);
+    var tempF = Math.floor(forecast.currently.temperature);
+    var tempC = Math.floor((tempF - 32) / 1.8);
     $city.attr('placeholder', forecast.name); //city
     $main.text(forecast.currently.summary); // Weather Description
     weatherIcon = forecast.currently.icon;
     forecastIcons.set('weather_icon', weatherIcon);
     forecastIcons.play();
-    changeTemp(temp, 'F');
-    changeBgColor(temp);
+    changeTemp(tempC, 'C');
+    changeBgColor(tempC);
+    changeWeatherImage(weatherIcon);
 }
 // change temperature metric-imperial
 function setMetrics() {
@@ -139,6 +142,25 @@ function changeBgColor(temp) {
         position = 100;
     }
     $('body').css('background-position', position + '%');
+}
+
+// Change Weather image
+
+function changeWeatherImage(icon) {
+  'use strict'
+    var image = {
+        clear_night: 'clear-night',
+        clear_day: 'clear-day',
+        cloudy: ['partly-cloudy-day', 'partly-cloudy-night', 'fog', 'cloudy', 'wind'],
+        snow: ['snow', 'sleet'],
+        rain: ['rain', 'drizzle']
+    };
+    $.map(image, function(value, key) {
+        if (value === icon || key.indexOf(icon) !== -1) {
+            $('.weather-image').css('background-image', 'url(\'../images/' + key + '.jpg\')');
+        }
+    });
+
 }
 
 $(document).ready(function () {
